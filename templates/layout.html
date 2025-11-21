@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MHP Portal - Your Mental Health Partner</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Stylesheet -->
+    <style>
+        :root {
+            --primary-blue: #3B82F6;
+            --dark-blue: #1E3A8A;
+            --light-gray: #F3F4F6;
+            --medium-gray: #E5E7EB;
+            --dark-gray: #4B5563;
+            --text-color: #1F2937;
+            --white: #FFFFFF;
+            --font-family-sans-serif: 'Poppins', sans-serif;
+        }
+        body { background-color: var(--light-gray); font-family: var(--font-family-sans-serif); color: var(--text-color); }
+        .navbar { background-color: var(--white); border-bottom: 1px solid var(--medium-gray); }
+        .navbar-brand { font-weight: 700; color: var(--dark-blue) !important; }
+        .nav-link { font-weight: 500; color: var(--dark-gray) !important; }
+        .nav-link:hover { color: var(--primary-blue) !important; }
+        .btn-primary { background-color: var(--primary-blue); border-color: var(--primary-blue); font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.5rem; transition: all 0.3s ease; }
+        .btn-primary:hover { background-color: var(--dark-blue); border-color: var(--dark-blue); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card { border: none; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        h1, h2, h3, h4, h5 { font-weight: 600; color: var(--dark-blue); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('index') }}">MHP Portal</a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {% if session.user_type == 'patient' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_dashboard') }}">My Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('find_match') }}">Find My Match</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('resource_library') }}">Resources</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_invoices') }}">My Invoices</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_profile') }}">My Profile</a></li>
+                        {% elif session.user_type == 'therapist' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('therapist_dashboard') }}">My Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('therapist_profile') }}">My Profile</a></li>
+                        {% elif session.user_type == 'admin' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Therapist Management</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_reports') }}">Reports</a></li>
+                        {% else %}
+                             <li class="nav-item"><a class="nav-link" href="{{ url_for('show_therapists') }}">Browse Therapists</a></li>
+                        {% endif %}
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        {% if session.user_id %}
+                            <span class="navbar-text me-3">Welcome, {{ session.first_name }}!</span>
+                            <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary btn-sm">Logout</a>
+                        {% else %}
+                            <div class="btn-group me-2">
+                                <a href="{{ url_for('patient_login') }}" class="btn btn-outline-primary btn-sm">Patient Login</a>
+                                <a href="{{ url_for('patient_signup') }}" class="btn btn-primary btn-sm">Sign Up</a>
+                            </div>
+                            <div class="btn-group">
+                                 <a href="{{ url_for('therapist_login') }}" class="btn btn-outline-secondary btn-sm">For Therapists</a>
+                                 <a href="{{ url_for('admin_login') }}" class="btn btn-outline-secondary btn-sm">Admin</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <!-- THIS IS THE CRUCIAL BLOCK THAT DISPLAYS THE MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <!-- END OF THE BLOCK -->
+
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="bg-dark text-white text-center p-4 mt-5">
+        <div class="container"><p class="mb-0">&copy; 2025 MHP Portal. All Rights Reserved.</p></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

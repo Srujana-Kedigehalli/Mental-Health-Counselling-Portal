@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-4">My Invoices</h1>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Appointment Date</th>
+                    <th>Therapist</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in invoices %}
+                <tr>
+                    <td>{{ invoice.InvoiceID }}</td>
+                    <td>{{ invoice.DateTime.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ invoice.TherapistName }}</td>
+                    <td>${{ "%.2f"|format(invoice.Amount) }}</td>
+                    <td><span class="badge bg-{% if invoice.Status == 'Paid' %}success{% elif invoice.Status == 'Cancelled' %}secondary{% else %}warning text-dark{% endif %}">{{ invoice.Status }}</span></td>
+                    <td>
+                        {% if invoice.Status == 'Unpaid' %}
+                        <form action="{{ url_for('pay_invoice', invoice_id=invoice.InvoiceID) }}" method="post">
+                            <button type="submit" class="btn btn-sm btn-success">Pay Now</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6">You have no invoices.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

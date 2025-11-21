@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Dashboard</h1>
+    <a href="{{ url_for('patient_profile') }}" class="btn btn-outline-primary">View My Profile</a>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Main Actions -->
+    <div class="col-lg-8">
+        <!-- Upcoming Appointments -->
+        <div class="card mb-4">
+            <div class="card-header"><h4>Upcoming Appointments</h4></div>
+            <div class="card-body">
+                {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead><tr><th>Date & Time</th><th>Therapist</th><th>Type</th><th>Meeting Link</th><th>Actions</th></tr></thead>
+                        <tbody>
+                        {% for appt in appointments %}
+                            <tr>
+                                <td>{{ appt.DateTime.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ appt.TherapistName }}</td>
+                                <td>{{ appt.SessionType }}</td>
+                                <td>
+                                    {% if appt.MeetingLink %}
+                                    <a href="{{ appt.MeetingLink }}" target="_blank" class="btn btn-sm btn-primary">Join Call</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form action="{{ url_for('cancel_appointment', appointment_id=appt.AppointmentID) }}" method="post" onsubmit="return confirm('Are you sure?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-secondary">You have no upcoming appointments. <a href="{{ url_for('find_match') }}">Find a therapist</a> to get started.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- My Journal -->
+        <div class="card">
+            <div class="card-header"><h4>My Journal</h4></div>
+            <div class="card-body">
+                <form action="{{ url_for('add_journal_entry') }}" method="post" class="mb-4">
+                    <h5>New Entry</h5>
+                    <div class="mb-3"><textarea class="form-control" name="entryText" rows="3" placeholder="How are you feeling today?" required></textarea></div>
+                    <div class="mb-3"><input type="text" class="form-control" name="mood" placeholder="My Mood (e.g., Hopeful, Anxious)"></div>
+                    <button type="submit" class="btn btn-primary">Add Entry</button>
+                </form>
+                <hr>
+                <h5>Past Entries</h5>
+                {% for journal in journals %}
+                <div class="border-bottom py-2">
+                    <p class="mb-1">{{ journal.EntryText }}</p>
+                    <small class="text-muted">{{ journal.EntryDate.strftime('%B %d, %Y') }} | Mood: {{ journal.Mood or 'Not specified' }}</small>
+                </div>
+                {% else %}
+                <p class="text-secondary">You have no journal entries yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Quick Actions & Reminders -->
+    <div class="col-lg-4">
+        <div class="card bg-white mb-4">
+            <div class="card-body text-center">
+                <h5 class="card-title">Check In</h5>
+                <p>Take our Daily Mood Tracker assessment to monitor your well-being.</p>
+                <a href="{{ url_for('take_assessment', assessment_id=1) }}" class="btn btn-primary">Take GAD-7 Assessment</a>
+            </div>
+        </div>
+
+        {% if next_appointment %}
+        <div class="card border-primary">
+             <div class="card-header bg-primary text-white"><h5>Next Appointment</h5></div>
+            <div class="card-body">
+                <p>You have an upcoming session on:</p>
+                <h5 class="card-title">{{ next_appointment.strftime('%A, %B %d, %Y') }}</h5>
+                <p class="card-text">at {{ next_appointment.strftime('%I:%M %p') }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

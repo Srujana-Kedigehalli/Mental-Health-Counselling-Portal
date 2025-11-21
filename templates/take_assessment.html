@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-2">{{ assessment.Name }}</h1>
+<p class="lead mb-4">{{ assessment.Description }}</p>
+
+<form method="post">
+    <div class="card">
+        <ul class="list-group list-group-flush">
+            <!-- Dynamically loop through questions -->
+            {% for question in questions %}
+            <li class="list-group-item py-3">
+                <p><strong>{{ loop.index }}. {{ question.QuestionText }}</strong></p>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="q_{{ question.QuestionID }}" value="0" required><label class="form-check-label">0</label></div>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="q_{{ question.QuestionID }}" value="1"><label class="form-check-label">1</label></div>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="q_{{ question.QuestionID }}" value="2"><label class="form-check-label">2</label></div>
+                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="q_{{ question.QuestionID }}" value="3"><label class="form-check-label">3</label></div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <button type="submit" class="btn btn-success mt-4">Submit Assessment</button>
+</form>
+{% endblock %}

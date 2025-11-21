@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-4">Admin Reports</h1>
+
+<h3 class="mt-4">Monthly Revenue</h3>
+<div class="card">
+    <div class="card-body">
+        <p class="card-text">This report shows the total revenue from paid invoices, grouped by month.</p>
+        <table class="table table-striped">
+            <thead class="table-dark"><tr><th>Month</th><th>Total Revenue</th></tr></thead>
+            <tbody>
+                {% for row in revenue_report %}
+                <tr>
+                    <td>{{ row.Month }}</td>
+                    <td>${{ "%.2f"|format(row.MonthlyRevenue) }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="2">No revenue data available.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<h3 class="mt-5">Inactive Patients</h3>
+<div class="card">
+    <div class="card-body">
+        <p class="card-text">This report lists all registered patients who have never booked an appointment.</p>
+        <table class="table table-striped">
+            <thead class="table-dark"><tr><th>Patient ID</th><th>Name</th><th>Email</th><th>Registered On</th></tr></thead>
+            <tbody>
+                {% for patient in inactive_patients %}
+                <tr>
+                    <td>{{ patient.PatientID }}</td>
+                    <td>{{ patient.FirstName }} {{ patient.LastName }}</td>
+                    <td>{{ patient.Email }}</td>
+                    <td>{{ patient.RegistrationDate.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="4">No inactive patients found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    <!-- ... (Patient details and Edit form columns are unchanged) ... -->
+    <div class="col-md-7">
+        <h1 class="mb-4">Patient Profile</h1>
+        <div class="card">
+            <div class="card-header"><h4>{{ patient.FirstName }} {{ patient.LastName }}</h4></div>
+            <div class="card-body">
+                <p><strong>Patient ID:</strong> {{ patient.PatientID }}</p>
+                <p><strong>Email:</strong> {{ patient.Email }} (Cannot be changed)</p>
+                <p><strong>Phone Number:</strong> {{ patient.PhoneNo }}</p>
+                <p><strong>Date of Birth:</strong> {{ patient.DOB.strftime('%B %d, %Y') }}</p>
+                <p><strong>Age:</strong> {{ patient.Age }}</p>
+                <p><strong>Member Since:</strong> {{ patient.RegistrationDate.strftime('%B %d, %Y') }}</p>
+            </div>
+        </div>
+    </div>
+    {% if session.user_type == 'patient' and session.user_id == patient.PatientID %}
+    <div class="col-md-5">
+        <h3 class="mb-4">Edit My Details</h3>
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{{ url_for('patient_profile') }}">
+                    <div class="mb-3"><label for="firstName" class="form-label">First Name</label><input type="text" class="form-control" name="firstName" value="{{ patient.FirstName }}" required></div>
+                    <div class="mb-3"><label for="lastName" class="form-label">Last Name</label><input type="text" class="form-control" name="lastName" value="{{ patient.LastName }}" required></div>
+                    <div class="mb-3"><label for="phoneNo" class="form-label">Phone Number</label><input type="tel" class="form-control" name="phoneNo" value="{{ patient.PhoneNo }}"></div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- NEW & UPDATED: Show different sections based on who is viewing -->
+{% if session.user_type in ['therapist', 'admin'] %}
+    <hr class="my-5">
+    <div class="row">
+        <!-- Assessment History -->
+        <div class="col-md-6">
+            <h3>Assessment History</h3>
+            {% if assessment_history %}
+            <table class="table table-striped">
+                <thead><tr><th>Date Taken</th><th>Assessment</th><th>Score</th></tr></thead>
+                <tbody>
+                {% for result in assessment_history %}
+                    <tr>
+                        <td>{{ result.DateTaken.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ result.AssessmentName }}</td>
+                        <td>{{ result.TotalScore }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-secondary">This patient has not completed any assessments yet.</p>
+            {% endif %}
+        </div>
+        <!-- Journal Entries -->
+        <div class="col-md-6">
+            <h3>Journal Entries</h3>
+            {% if journals %}
+                {% for journal in journals %}
+                <div class="card mb-2">
+                    <div class="card-header">{{ journal.EntryDate.strftime('%B %d, %Y') }} | Mood: {{ journal.Mood }}</div>
+                    <div class="card-body"><p class="card-text">{{ journal.EntryText }}</p></div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="text-secondary">This patient has not written any journal entries.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

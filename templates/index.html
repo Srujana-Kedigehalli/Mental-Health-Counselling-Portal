@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- Hero Section with a more professional image and layout -->
+<section class="py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold lh-1 mb-4">Your Path to Mental Wellness Starts Here</h1>
+            <p class="lead text-secondary mb-4">Connect with compassionate, licensed therapists online. Experience confidential and personalized therapy from the comfort of your home.</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a href="{{ url_for('show_therapists') }}" class="btn btn-primary btn-lg px-4 me-md-2">Browse Therapists</a>
+                <a href="{{ url_for('patient_signup') }}" class="btn btn-outline-secondary btn-lg px-4">Get Started</a>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-4 mt-lg-0">
+            <img src="https://images.unsplash.com/photo-1544365558-35aa4a2592e3?q=80&w=2835&auto=format&fit=crop" class="img-fluid rounded-3 shadow-lg" alt="A calm and welcoming therapy space">
+        </div>
+    </div>
+</section>
+
+<hr class="my-5">
+
+<!-- "How It Works" Section with icons -->
+<section class="py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">A Simple, Confidential Process</h2>
+        <p class="text-muted">We've designed our platform to be simple and secure every step of the way.</p>
+    </div>
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="card p-4 h-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary-blue)" class="bi bi-person-check-fill mx-auto mb-3" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                </svg>
+                <h4 class="card-title">1. Find Your Match</h4>
+                <p class="card-text text-secondary">Use our intelligent matching tool to find a therapist who fits your specific needs, preferences, and concerns.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 h-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary-blue)" class="bi bi-calendar2-plus-fill mx-auto mb-3" viewBox="0 0 16 16">
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 3.5v1c0 .276.244.5.545.5h10.91c.3 0 .545-.224.545-.5v-1c0-.276-.244-.5-.546-.5H2.545c-.3 0-.545.224-.545.5zm6.5 5a.5.5 0 0 0-1 0V10H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V11H10a.5.5 0 0 0 0-1H8.5V8.5z"/>
+                </svg>
+                <h4 class="card-title">2. Schedule a Session</h4>
+                <p class="card-text text-secondary">View your therapist's availability and book a secure video or audio session at a time that works for you.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 h-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary-blue)" class="bi bi-camera-video-fill mx-auto mb-3" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.11-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
+                </svg>
+                <h4 class="card-title">3. Begin Your Journey</h4>
+                <p class="card-text text-secondary">Connect with your therapist via our integrated video platform. All sessions are confidential and secure.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

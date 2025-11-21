@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-4">Resource Library</h1>
+<p>Browse articles written by our professionals to help you on your wellness journey.</p>
+<div class="list-group">
+{% for article in articles %}
+<a href="{{ url_for('view_article', article_id=article.ArticleID) }}" class="list-group-item list-group-item-action">
+<div class="d-flex w-100 justify-content-between">
+<h5 class="mb-1">{{ article.Title }}</h5>
+<small class="text-muted">{{ article.PublishDate.strftime('%B %d, %Y') }}</small>
+</div>
+<p class="mb-1">{{ article.Excerpt }}...</p>
+<small class="text-muted">By {{ article.Author }}</small>
+</a>
+{% else %}
+<p>No articles found.</p>
+{% endfor %}
+</div>
+{% endblock %}

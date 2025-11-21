@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+<div class="row">
+    <!-- Left Column: Therapist Management -->
+    <div class="col-lg-8">
+        <h3 class="mt-4">Therapist Management</h3>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>License #</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for therapist in therapists %}
+                        <tr>
+                            <td>{{ therapist.TherapistID }}</td>
+                            <td>{{ therapist.FirstName }} {{ therapist.LastName }}</td>
+                            <td>{{ therapist.Email }}</td>
+                            <td>{{ therapist.LicenseNumber }}</td>
+                            <td>
+                                <span class="badge bg-{% if therapist.VerificationStatus == 'Verified' %}success{% else %}warning text-dark{% endif %}">
+                                    {{ therapist.VerificationStatus }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if therapist.VerificationStatus == 'Pending' %}
+                                <form action="{{ url_for('verify_therapist', therapist_id=therapist.TherapistID) }}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-success">Verify</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="6">No therapists have registered yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Specialization Management -->
+    <div class="col-lg-4">
+        <h3 class="mt-4">Specialization Management</h3>
+        <div class="card mb-4">
+            <div class="card-header"><h5>Add New Specialization</h5></div>
+            <div class="card-body">
+                <form action="{{ url_for('add_specialization') }}" method="post">
+                    <div class="mb-3">
+                        <label for="specializationName" class="form-label">Specialization Name</label>
+                        <input type="text" class="form-control" name="specializationName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="specializationDescription" class="form-label">Description (Optional)</label>
+                        <textarea class="form-control" name="specializationDescription" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add to Master List</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h5>Existing Specializations</h5></div>
+            <ul class="list-group list-group-flush">
+                {% for spec in specializations %}
+                <li class="list-group-item">{{ spec.SpecializationName }}</li>
+                {% else %}
+                <li class="list-group-item">No specializations found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

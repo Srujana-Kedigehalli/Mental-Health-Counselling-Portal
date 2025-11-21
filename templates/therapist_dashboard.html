@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-4">Therapist Dashboard</h1>
+    
+    <h3 class="mt-4">My Scheduled Appointments</h3>
+    <div class="list-group">
+    {% for appt in appointments %}
+        <div class="list-group-item mb-3 shadow-sm">
+            <div class="d-flex w-100 justify-content-between">
+                <!-- THE FIX IS HERE: It's now correctly appt.LastName -->
+                <h5 class="mb-1">{{ appt.FirstName }} {{ appt.LastName }}</h5>
+                <small>Status: <span class="badge bg-{% if appt.Status == 'Scheduled' %}success{% else %}secondary{% endif %}">{{ appt.Status }}</span></small>
+            </div>
+            <p class="mb-1"><strong>Date:</strong> {{ appt.DateTime.strftime('%Y-%m-%d %H:%M') }}</p>
+            {% if appt.MeetingLink %}
+            <p class="mb-2"><strong>Meeting Link:</strong> <a href="{{ appt.MeetingLink }}" target="_blank">Join Call</a></p>
+            {% endif %}
+            <a href="{{ url_for('view_patient_by_therapist', patient_id=appt.PatientID) }}" class="btn btn-sm btn-info mb-2">View Patient Profile & Journal</a>
+            
+            <hr>
+            <h6>Session Notes:</h6>
+            
+            <!-- This section clearly shows any existing note -->
+            {% if appt.NoteText %}
+            <div class="alert alert-light mt-2">
+                <strong>Existing Note:</strong> {{ appt.NoteText }}
+            </div>
+            {% endif %}
+
+            <!-- This form allows adding or updating a session note -->
+            <form class="mt-2" action="{{ url_for('add_session_note', appointment_id=appt.AppointmentID) }}" method="post">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="noteText" placeholder="Add or update session note..." value="{{ appt.NoteText or '' }}" required>
+                    <button class="btn btn-outline-secondary" type="submit">Save Note</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <p>You have no scheduled appointments.</p>
+    {% endfor %}
+    </div>
+{% endblock %}

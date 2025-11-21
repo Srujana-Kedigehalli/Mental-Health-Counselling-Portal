@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+    <h3 class="mt-5">Therapist Appointment Statistics (Aggregate Query)</h3>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Therapist Name</th>
+                <th>Total Appointments</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in stats %}
+            <tr>
+                <td>{{ row.TherapistName }}</td>
+                <td>{{ row.NumberOfAppointments }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="mt-5">Upcoming Appointments for Patient #1 (Stored Procedure)</h3>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Appointment Date & Time</th>
+                <th>Session Type</th>
+                <th>Therapist Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+            <tr>
+                <td>{{ appt.DateTime }}</td>
+                <td>{{ appt.SessionType }}</td>
+                <td>{{ appt.TherapistName }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
