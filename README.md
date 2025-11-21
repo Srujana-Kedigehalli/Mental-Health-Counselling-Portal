@@ -1,6 +1,6 @@
 # MHP Portal: An Online Mental Health Counselling Platform
 
-## 📖 Project Overview
+## Project Overview
 
 **MHP Portal** is a comprehensive, database-driven web application built as a project for the **Database Management System (UE23CS351A)** course. The objective was to design and build a full-stack, deployable application that works seamlessly with a robust relational database.
 
@@ -8,7 +8,7 @@ This platform serves as a secure and user-friendly bridge between individuals se
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 The application is architected around three distinct user roles: **Patient**, **Therapist**, and **Admin**.
 
@@ -37,7 +37,7 @@ The application is architected around three distinct user roles: **Patient**, **
 
 ---
 
-## 🛠️ Tech Stack & Database Design
+## Tech Stack & Database Design
 
 #### Technologies Used
 *   **Backend:** Python with the Flask web framework.
@@ -68,7 +68,7 @@ The project is built on a highly normalized relational schema (3NF) to ensure da
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these instructions to get a local copy up and running.
 
